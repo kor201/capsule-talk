@@ -1,0 +1,58 @@
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - laravel
+      - db
+    working_dir: /var/www/html
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/nginx/ssl/server.crt:/etc/nginx/ssl/server.crt
+      - ./docker/nginx/ssl/server.key:/etc/nginx/ssl/server.key
+      - .:/var/www/html:cached
+    restart: on-failure
+
+  nextjs:
+    build: ./docker/nextjs
+    volumes:
+      - ./nextjs:/usr/src/app
+    ports:
+      - 3000:3000
+    working_dir: /usr/src/app
+    tty: true
+    command: sh -c "npm run dev"
+
+  laravel:
+    build: ./docker/laravel
+    working_dir: /var/www/html
+    volumes:
+      - ./docker/laravel/src/php.ini:/usr/local/etc/php/php.ini
+      - ./laravel:/var/www/html:cached
+
+  db:
+    image: mysql:8
+    ports:
+      - '33066:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_HOST: ${DB_HOST}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      # - ./docker/mysql/dump:/docker-entrypoint-initdb.d
+      - ./docker/mysql/data:/var/lib/mysql
+    restart: on-failure
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - 8080:8080
+    environment:
+      ADMINER_DESIGN: lucas-sandery
+      ADMINER_DEFAULT_SERVER: host.docker.internal:33066
+    restart: on-failure
