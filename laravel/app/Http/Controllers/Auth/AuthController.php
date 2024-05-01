@@ -16,6 +16,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string|min:8',
         ]);
 
         $user = User::create([
@@ -25,31 +26,35 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
+            'message' => 'registered successfully.',
             'user' => $user,
-            'token' => $user->createToken('tokens')->plainTextToken
+            'token' => $user->createToken('register')->plainTextToken
         ], 201);
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'Unauthorized.'], 401);
         }
 
-        return response()->json([
-            'token' => $request->user()->createToken('tokens')->plainTextToken
-        ]);
+        $user = Auth::user();
+        $token = $user->createToken('login')->plainTextToken;
+
+        return response()->json(['message' => 'login was successful.', 'token' => $token], 200);
     }
 
     public function user(Request $request)
     {
-        return response()->json($request->user());
+        if(!response()->json($request->user())){
+            return response()->json(['message' => 'Unauthorized.'], 401);
+        }
+
+        return response()->json(['message' => 'Access successful.', 'user' => $request->user()], 200);
     }
 }

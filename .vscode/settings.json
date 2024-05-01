@@ -1,0 +1,9 @@
+{
+  "[php]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "nuxt.isNuxtApp": false,
+  "cSpell.ignoreWords": ["assertDontSee", "veritrans"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}

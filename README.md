@@ -60,7 +60,6 @@ https://readouble.com/laravel/11.x/ja/sanctum.html
 // fortify
 https://readouble.com/laravel/11.x/ja/fortify.html
 
-// docker compose exec laravel composer require laravel/breeze
 docker compose exec laravel php artisan install:api
 docker compose exec laravel php artisan migrate
 ```
