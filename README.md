@@ -36,30 +36,3 @@ make up
 # コンテナ削除（開発終了時）
 make down
 ```
-
-## 以下開発めも
-
-### frontend
-
-```
-
-// プロジェクト作成
-docker compose run --rm nextjs sh -c 'npx create-next-app . --typescript'
-
-```
-
-### backend
-
-```
-// プロジェクト作成
-composer create-project laravel/laravel:^11.0 laravel
-
-// ログインパッケージインストール
-// sanctum
-https://readouble.com/laravel/11.x/ja/sanctum.html
-// fortify
-https://readouble.com/laravel/11.x/ja/fortify.html
-
-docker compose exec laravel php artisan install:api
-docker compose exec laravel php artisan migrate
-```
