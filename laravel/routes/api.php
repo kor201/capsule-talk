@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Session\Middleware\StartSession;
 use App\Http\Middleware\LimitGuestTalkAccess;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Chat\ChatController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\ChatController;
 
 // アクセス確認用
 Route::get('/', function () {

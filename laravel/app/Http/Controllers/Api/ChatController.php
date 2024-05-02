@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Chat;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class ChatController extends Controller
     }
 
     // chat発言
-    public function talk(Request $request)
+    public function message(Request $request)
     {
         //
     }
