@@ -13,5 +13,7 @@ Route::get('/', function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-// Route::get('/user', [AuthController::class, 'user'])->middleware('auth:sanctum');
-Route::get('/chat', [ChatController::class, 'chat'])->middleware([StartSession::class, LimitGuestTalkAccess::class]);
+// 会員or非会員check
+Route::middleware([StartSession::class, LimitGuestTalkAccess::class])->group(function () {
+    Route::get('/chat', [ChatController::class, 'chat']);
+});

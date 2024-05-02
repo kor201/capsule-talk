@@ -17,7 +17,7 @@ class LimitGuestTalkAccess
      * @param  int  $limitMinutes セッション有効期間（分）
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $limitMinutes = 1): Response
+    public function handle(Request $request, Closure $next, $limitMinutes = 10): Response
     {
         // トークンによる認証をチェック
         if (Auth::guard('api')->check() && Auth::guard('api')->user()->currentAccessToken()->name === 'login') {
