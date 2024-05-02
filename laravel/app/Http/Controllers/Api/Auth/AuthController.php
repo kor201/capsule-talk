@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Models\Entities\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Carbon\CarbonImmutable;
+use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
@@ -44,8 +45,11 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('login')->plainTextToken;
+        $tokenResult = $user->createToken('login');
+        $tokenModel = $tokenResult->accessToken;
+        $tokenModel->expires_at = CarbonImmutable::now()->addMonths(1);
+        $tokenModel->save();
 
-        return response()->json(['message' => 'login was successful.', 'token' => $token], 200);
+        return response()->json(['message' => 'login was successful.', 'access_token' => $tokenResult->plainTextToken,], 200);
     }
 }
