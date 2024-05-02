@@ -10,6 +10,13 @@ use App\Services\Api\MessageService;
 
 class MessageController extends Controller
 {
+    private $messageService;
+
+    public function __construct(MessageService $messageService)
+    {
+        $this->messageService = $messageService;
+    }
+
     public function index($roomId)
     {
         $messages = Message::where('room_id', $roomId)->get();
@@ -18,11 +25,17 @@ class MessageController extends Controller
 
     public function store(Request $request, $roomId)
     {
-        $message = Message::create([
+        $param = [
             'room_id' => $roomId,
-            'user_id' => Auth::guard('api')->user() ? Auth::guard('api')->user()->id : null,
+            'user_id' => optional(Auth::guard('api')->user())->id,
             'message' => $request->message
-        ]);
-        return response()->json($message, 201);
+        ];
+
+        $result = $this->messageService->createPostMessage($param);
+        if ($result) {
+            return response()->json(['success' => 'Message created successfully.'], 201);
+        } else {
+            return response()->json(['warning' => 'Could not create or update message.'], 400);
+        }
     }
 }

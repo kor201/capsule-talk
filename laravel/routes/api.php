@@ -15,7 +15,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 // 会員or非会員check
 Route::middleware(['auth:api', LimitGuestTalkAccess::class])->group(function () {
-    Route::get('/chat', [MessageController::class, 'chat']);
     Route::post('/rooms', [RoomController::class, 'store']);
     Route::get('rooms/{roomId}/messages', [MessageController::class, 'index']);
     Route::post('rooms/{roomId}/messages', [MessageController::class, 'store']);
