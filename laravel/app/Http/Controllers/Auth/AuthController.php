@@ -48,13 +48,4 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'login was successful.', 'token' => $token], 200);
     }
-
-    public function user(Request $request)
-    {
-        if(!$request->user()){
-            return response()->json(['message' => 'Unauthorized.'], 401);
-        }
-
-        return response()->json(['message' => 'Access successful.', 'user' => $request->user()], 200);
-    }
 }
