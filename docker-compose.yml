@@ -30,7 +30,7 @@ services:
     working_dir: /var/www/html
     volumes:
       - ./docker/laravel/src/php.ini:/usr/local/etc/php/php.ini
-      - ./laravel:/var/www/html:cached
+      - .:/var/www/html:cached
 
   db:
     image: mysql:8
